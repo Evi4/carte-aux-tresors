@@ -1,0 +1,6 @@
+# {C comme Carte} - {Nb. de case en largeur} - {Nb. de case en hauteur}
+C - 3 - 4
+# {M comme Montagne} - {Axe horizontal} - {Axe vertical}
+M - 0 - 2
+# {A comme Aventurier} - {Nom de l’aventurier} - {Axe horizontal} - {Axe vertical} - {Orientation} - {Séquence de mouvement}
+A - Indiana - 1 - 1 - S - AADADA
