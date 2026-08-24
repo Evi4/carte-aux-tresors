@@ -1,6 +1,47 @@
 from enum import Enum
 
 
+class Map:
+    """Class representing a map with a width and height.
+    Attributes:
+        width (int): The width of the map.
+        height (int): The height of the map.
+    """
+
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        mountains: list[tuple[int, int]],
+        treasures: dict[tuple[int, int], int],
+    ):
+        self.width = width
+        self.height = height
+        self._mountains = mountains
+        self._treasures = treasures
+
+    def is_valid_position(self, x: int, y: int) -> bool:
+        """Return True if the position is within bounds and not a mountain."""
+        in_bounds = 0 <= x < self.width and 0 <= y < self.height
+        is_mountain = (x, y) in self._mountains
+        return in_bounds and not is_mountain
+
+    def collect_treasure_at(self, x: int, y: int) -> bool:
+        """Collect one treasure at the given position, if any remain. Returns True if collected."""
+        if self._treasures.get((x, y), 0) > 0:
+            self._treasures[(x, y)] -= 1
+            return True
+        return False
+
+    def remaining_treasures(self) -> dict[tuple[int, int], int]:
+        """Return the treasures still present on the map."""
+        return {pos: count for pos, count in self._treasures.items() if count > 0}
+
+    def mountains_list(self) -> list[tuple[int, int]]:
+        """Return the list of mountain positions."""
+        return list(self._mountains)
+
+
 class Orientation(Enum):
     """Enum representing the orientation."""
 

@@ -10,14 +10,12 @@ def test_parse_input(tmp_path):
         "C - 5 - 6\nM - 2 - 3\nT - 4 - 4 - 2\nA - Dora - 0 - 1 - E - AAGDA\n"
     )
 
-    map_width, map_height, mountains, treasures, adventurers = parse_input(
-        str(input_file)
-    )
+    game_map, adventurers = parse_input(str(input_file))
 
-    assert map_width == 5
-    assert map_height == 6
-    assert mountains == [(2, 3)]
-    assert treasures == {(4, 4): 2}
+    assert game_map.width == 5
+    assert game_map.height == 6
+    assert game_map.is_valid_position(2, 3) is False
+    assert game_map.remaining_treasures() == {(4, 4): 2}
     assert len(adventurers) == 1
     assert adventurers[0].name == "Dora"
     assert adventurers[0].x == 0
@@ -39,10 +37,11 @@ def test_parse_input_with_multiple_elements(tmp_path):
         "A - Boots - 4 - 4 - N - A\n"
     )
 
-    _, _, mountains, treasures, adventurers = parse_input(str(input_file))
+    game_map, adventurers = parse_input(str(input_file))
 
-    assert mountains == [(1, 1), (3, 3)]
-    assert treasures == {(0, 0): 2, (4, 4): 5}
+    assert game_map.is_valid_position(1, 1) is False
+    assert game_map.is_valid_position(3, 3) is False
+    assert game_map.remaining_treasures() == {(0, 0): 2, (4, 4): 5}
     assert len(adventurers) == 2
     assert adventurers[0].name == "Dora"
     assert adventurers[1].name == "Boots"
@@ -59,10 +58,10 @@ def test_parse_input_ignores_comments_and_empty_lines(tmp_path):
         "A - Dora - 0 - 1 - E - A\n"
     )
 
-    map_width, map_height, _, _, adventurers = parse_input(str(input_file))
+    game_map, adventurers = parse_input(str(input_file))
 
-    assert map_width == 5
-    assert map_height == 6
+    assert game_map.width == 5
+    assert game_map.height == 6
     assert len(adventurers) == 1
 
 

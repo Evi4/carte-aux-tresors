@@ -7,12 +7,9 @@ def run_test_simulation(input_path: str, tmp_path) -> str:
     """Run simulation and return the output content."""
     output_file_path = tmp_path / "output.txt"
 
-    map_width, map_height, mountains, treasures, adventurers = parse_input(
-        input_path)
-    run_simulation(map_width, map_height, mountains, treasures, adventurers)
-    write_output(
-        str(output_file_path), map_width, map_height, mountains, treasures, adventurers
-    )
+    game_map, adventurers = parse_input(input_path)
+    run_simulation(game_map, adventurers)
+    write_output(str(output_file_path), game_map, adventurers)
 
     return output_file_path.read_text().strip()
 

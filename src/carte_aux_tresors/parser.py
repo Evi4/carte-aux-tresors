@@ -1,18 +1,13 @@
-from carte_aux_tresors.models import Adventurer, Orientation
+from carte_aux_tresors.models import Adventurer, Map, Orientation
 
 
-def parse_input(
-    input_file_path: str,
-) -> tuple[
-    int, int, list[tuple[int, int]], dict[tuple[int, int], int], list[Adventurer]
-]:
+def parse_input(input_file_path: str) -> tuple[Map, list[Adventurer]]:
     """Parse the input file and return the map dimensions, mountains, treasures, and adventurers.
     Args:
         input_file_path (str): The path to the input file.
     Returns:
-        tuple: (map_width, map_height, mountains, treasures, adventurers)
+        tuple: (map, adventurers) where map is an instance of Map and adventurers is a list of Adventurer instances.
     """
-
     mountains = []
     treasures = {}
     adventurers = []
@@ -157,4 +152,4 @@ def parse_input(
             "Au moins un aventurier doit être défini dans le fichier d'entrée avec une ligne commençant par A."
         )
 
-    return map_width, map_height, mountains, treasures, adventurers
+    return Map(map_width, map_height, mountains, treasures), adventurers

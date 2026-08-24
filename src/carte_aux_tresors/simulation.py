@@ -1,13 +1,7 @@
-from carte_aux_tresors.models import Adventurer
+from carte_aux_tresors.models import Adventurer, Map
 
 
-def run_simulation(
-    map_width: int,
-    map_height: int,
-    mountains: list[tuple[int, int]],
-    treasures: dict[tuple[int, int], int],
-    adventurers: list[Adventurer],
-) -> None:
+def run_simulation(game_map: Map, adventurers: list[Adventurer]) -> None:
     """Run the simulation, turn by turn."""
     max_movements = max(len(a.movements) for a in adventurers)
 
@@ -26,17 +20,13 @@ def run_simulation(
                 new_x, new_y = adventurer.orientation.move_forward(
                     adventurer.x, adventurer.y
                 )
-
-                in_bounds = 0 <= new_x < map_width and 0 <= new_y < map_height
-                is_mountain = (new_x, new_y) in mountains
                 is_occupied = any(
                     a.x == new_x and a.y == new_y
                     for a in adventurers
                     if a is not adventurer
                 )
 
-                if in_bounds and not is_mountain and not is_occupied:
+                if game_map.is_valid_position(new_x, new_y) and not is_occupied:
                     adventurer.x, adventurer.y = new_x, new_y
-                    if (new_x, new_y) in treasures and treasures[(new_x, new_y)] > 0:
+                    if game_map.collect_treasure_at(new_x, new_y):
                         adventurer.treasure_count += 1
-                        treasures[(new_x, new_y)] -= 1
